@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import date, datetime
 import json
 import dateutil.parser
+import os.path
 
 # Initialize app
 flask_app = Flask(__name__)
@@ -196,7 +197,7 @@ class To_do_list_item(Resource):
 			# Delete object from database
 			db.session.delete(item)
 			db.session.commit()
-			return request.json
+			return None
 
 		# Handle exceptions, especially KeyError for wrong id
 		except KeyError as e:
@@ -206,4 +207,6 @@ class To_do_list_item(Resource):
 
 # Initialize Flask app
 if __name__ == "__main__" :
+	if not os.path.exists('to-do-list.db'):
+		db.create_all()
 	flask_app.run(debug=True)
